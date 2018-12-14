@@ -34,3 +34,12 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Other files
+RatGame/Assets/Plugins
