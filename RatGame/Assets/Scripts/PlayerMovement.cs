@@ -16,16 +16,16 @@ public class PlayerMovement : MonoBehaviour {
     private int _facingMultiplier = 1;
 
     private enum MovementState {
-        IDLE,
-        WALKING,
-        RUNNING,
-        JUMPING,
-        DASHING,
-        ATTACKING,
-        ROLLING
+        Idle,
+        Walking,
+        Running,
+        Jumping,
+        Dashing,
+        Attacking,
+        Rolling
     }
 
-    private MovementState _movementState = MovementState.IDLE;
+    private MovementState _movementState = MovementState.Idle;
 
     private Rigidbody2D _rigidbody2D;
     private Transform _transform;
@@ -40,25 +40,25 @@ public class PlayerMovement : MonoBehaviour {
 
         // Walk left
         if (Input.GetKey(KeyCode.A)) {
-            _movementState = MovementState.WALKING;
+            _movementState = MovementState.Walking;
 
             _facingMultiplier = -1;
         }
         // Walk right
         else if (Input.GetKey(KeyCode.D)) {
-            _movementState = MovementState.WALKING;
+            _movementState = MovementState.Walking;
 
             _facingMultiplier = 1;
         }
 
-        if (_movementState == MovementState.WALKING) {
+        if (_movementState == MovementState.Walking) {
             moveCalc = new Vector2(_facingMultiplier, 0) * MoveForce;
         }
 
         // Run, if you're already walking that is
         if (Input.GetKey(KeyCode.LeftShift)) {
-            if (_movementState == MovementState.WALKING) {
-                _movementState = MovementState.RUNNING;
+            if (_movementState == MovementState.Walking) {
+                _movementState = MovementState.Running;
 
                 moveCalc *= RunMultiplier;
             }
@@ -66,12 +66,12 @@ public class PlayerMovement : MonoBehaviour {
 
         // Stop running, geez
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) {
-            _movementState = MovementState.IDLE;
+            _movementState = MovementState.Idle;
         }
 
         // Don't jump! Err, or in this case, do!
         if (Input.GetKey(KeyCode.W)) {
-            _movementState = MovementState.JUMPING;
+            _movementState = MovementState.Jumping;
 
             // moveCalc += Vector2.up * JumpForce;
             if (_onGround) {
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour {
 
         // Roll around but not quite at the speed of sound
         if (Input.GetKey(KeyCode.Space)) {
-            _movementState = MovementState.ROLLING;
+            _movementState = MovementState.Rolling;
 
             // Roll along the ground, like Dark Souls
             if (_onGround) {
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if (_movementState == MovementState.ROLLING) {
+        if (_movementState == MovementState.Rolling) {
             // TODO: Rotate the player whilst they roll
         }
 
@@ -108,12 +108,12 @@ public class PlayerMovement : MonoBehaviour {
             // print(other);
 
             switch (_movementState) {
-                case MovementState.ROLLING:
+                case MovementState.Rolling:
                     _rigidbody2D.AddForce(new Vector2(MoveForce * 10 * RollMultiplier * _facingMultiplier, 0f));
-                    goto case MovementState.JUMPING;
+                    goto case MovementState.Jumping;
 
-                case MovementState.JUMPING:
-                    _movementState = MovementState.IDLE;
+                case MovementState.Jumping:
+                    _movementState = MovementState.Idle;
                     break;
             }
 
